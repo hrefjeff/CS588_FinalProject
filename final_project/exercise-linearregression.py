@@ -9,8 +9,8 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 
 # Load dataset
-df = pd.read_csv('s1/e1/u2/test-acc.txt', delimiter=';')
-unmodified_df = pd.read_csv('s1/e1/u2/test-acc.txt', delimiter=';')
+df = pd.read_csv('s1/e1/u2/test.txt', delimiter=';')
+unmodified_df = pd.read_csv('s1/e1/u2/test.txt', delimiter=';')
 
 # Drop the time index as it's not a feature
 df = df.drop(columns=['time index'])
