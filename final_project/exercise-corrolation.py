@@ -6,12 +6,9 @@ import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 
-from sklearn.linear_model import LinearRegression
-from sklearn.model_selection import train_test_split
-
 def main():
 
-    exercise = 3
+    exercise = 5
     unit = 2
 
     # Load dataset for each subject
@@ -30,7 +27,7 @@ def main():
         # Plot the corrolation heatmap
         plt.figure(figsize = (8,8))
         sns.heatmap(cor_eff, linecolor='white', linewidths=1, annot=True)
-        plt.savefig(f'plots/corr_heatmap-s{subject}-e{exercise}-u{unit}-.png')
+        plt.savefig(f'plots/corr_heatmap-s{subject}-e{exercise}-u{unit}.png')
 
         # Reset the plot
         plt.figure()
