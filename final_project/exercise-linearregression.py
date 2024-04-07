@@ -2,6 +2,7 @@
 
 from sklearn.linear_model import LinearRegression
 from sklearn.model_selection import train_test_split
+from sklearn.metrics import mean_squared_error, r2_score
 
 import numpy as np
 import pandas as pd
@@ -35,11 +36,9 @@ df = df.drop(columns=['time index'])
 # predict what the petal width would be. Drop the species, and use all
 # columns to predict the species
 
-from sklearn.metrics import mean_squared_error, r2_score
-
 # Variables (Dropping petal length to show we can predict it)
-X = df.drop(labels='acc_z', axis=1)
-y = df['acc_z']
+X = df.drop(labels='acc_y', axis=1)
+y = df['acc_y']
 
 # Splitting the Dataset
 # In the real world, we test only a small sample
@@ -111,18 +110,24 @@ actual_df = unmodified_df.loc[5945]
 d = {
     'acc_x' : [actual_df['acc_x']],
     'acc_y' : [actual_df['acc_y']],
-    'acc_z' : [actual_df['acc_z']]
+    'acc_z' : [actual_df['acc_z']],
+    'gyr_x' : [actual_df['gyr_x']],
+    'gyr_y' : [actual_df['gyr_y']],
+    'gyr_z' : [actual_df['gyr_z']],
+    'mag_x' : [actual_df['mag_x']],
+    'mag_y' : [actual_df['mag_y']],
+    'mag_z' : [actual_df['mag_z']]
 }
 
 test_df = pd.DataFrame(data=d)
 
 print(test_df)
 
-X_test = test_df.drop('acc_z', axis=1)
-y_test = test_df['acc_z']
+X_test = test_df.drop('acc_y', axis=1)
+y_test = test_df['acc_y']
 
 # Predict the new data point using LR
 pred = lr.predict(X_test)
 
-print('Predicted acc_z: ', pred[0])
-print('Actual acc_z: ', actual_df['acc_z'])
+print('Predicted acc_y: ', pred[0])
+print('Actual acc_y: ', actual_df['acc_y'])
