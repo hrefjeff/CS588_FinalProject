@@ -6,9 +6,11 @@ import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 
+from sklearn.preprocessing import MinMaxScaler
+
 def main():
 
-    exercise = 5
+    exercise = 1
     unit = 2
 
     # Load dataset for each subject
@@ -20,9 +22,9 @@ def main():
 
         # Extract the corrolation coefficient
         cor_eff = df.corr(numeric_only=True)
-        print('\n')
-        print(f'Corrolation matrix for subject {subject}')
-        print(cor_eff)
+        # print('\n')
+        # print(f'Corrolation matrix for subject {subject}')
+        # print(cor_eff)
 
         # Plot the corrolation heatmap
         plt.figure(figsize = (8,8))
@@ -33,11 +35,11 @@ def main():
         plt.figure()
 
         # Plot the values
-        plt.plot(df['acc_x'])
-        plt.plot(df['acc_y'])
-        plt.plot(df['acc_z'])
+        plt.plot(df['acc_x'], linestyle='solid')
+        plt.plot(df['acc_y'], linestyle='dotted')
+        plt.plot(df['acc_z'], linestyle='dashed')
 
-        plt.savefig(f'plots/lineplot-s{subject}.png')
+        plt.savefig(f'plots/lineplot-s{subject}-e{exercise}.png')
 
 if __name__ == '__main__':
     main()
