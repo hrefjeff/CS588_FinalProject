@@ -39,18 +39,19 @@ class Discriminator(neuralnetwork.Module):
         return self.model(x)
 
 def main():
+
+    subject = 1
+    exercise = 1
+    unit = 2
+
     # Load dataset
-    df = pd.read_csv('s1/e1/u1/template_session.txt', delimiter=';')
+    df = pd.read_csv(f's{subject}/e{exercise}/u{unit}/test-correct.csv', delimiter=';')
 
     # Drop the time index as it's not a feature
     df = df.drop(columns=['time index'])
 
-    # Standardize the data
-    scaler = StandardScaler()
-    scaled_features = scaler.fit_transform(df)
-
     # Convert to pytorch tensors
-    tensor_data = torch.tensor(scaled_features, dtype=torch.float)
+    tensor_data = torch.tensor(df, dtype=torch.float)
 
     # Create a dataset and dataloader
     dataset = TensorDataset(tensor_data)

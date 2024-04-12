@@ -39,7 +39,7 @@ def main():
         plt.plot(df['acc_y'], linestyle='dotted')
         plt.plot(df['acc_z'], linestyle='dashed')
 
-        plt.savefig(f'plots/lineplot-s{subject}-e{exercise}.png')
+        plt.savefig(f'plots/lineplot-s{subject}-e{exercise}-u{unit}.png')
 
 if __name__ == '__main__':
     main()
