@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 def main():
 
     exercise = 1
-    unit = 2
+    unit = 5
 
     # Load dataset for each subject
     for subject in range(1, constants.SUBJECTS + 1):

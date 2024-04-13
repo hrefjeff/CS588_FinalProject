@@ -32,7 +32,7 @@ def main():
 
         # Display contribution of each pc's
         ev = pca.explained_variance_ratio_
-        print(f'{subject} : {ev}')
+        # print(f'{subject} : {ev}')
 
         # These values are normalized to a scale of 1.
         # The first principal component retains .61 (61%) of information
@@ -58,7 +58,7 @@ def main():
         plt.xticks([1,2,3,4,5],pc,fontsize=8,rotation=30)
         plt.ylabel('Variance Ratio')
         plt.title(f'Variance Ratio of S{subject}-E{exercise} Dataset')
-        plt.savefig(f'plots/variance-ratio-s{subject}-e{exercise}.png')
+        plt.savefig(f'plots/ev/variance-ratio-s{subject}-e{exercise}.png')
         plt.figure()
 
 if __name__ == '__main__':
