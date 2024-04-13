@@ -18,16 +18,17 @@ def main():
         # Drop the time index as it's not a feature
         df = df.drop(columns=['time index'])
 
-        # Extract the corrolation coefficient
-        cor_eff = df.corr(numeric_only=True)
-        # print('\n')
-        # print(f'Corrolation matrix for subject {subject}')
-        # print(cor_eff)
+        # Reset the plot
+        plt.figure()
 
-        # Plot the corrolation heatmap
-        plt.figure(figsize = (8,8))
-        sns.heatmap(cor_eff, linecolor='white', linewidths=1, annot=True)
-        plt.savefig(f'plots/corr_heatmap-s{subject}-e{exercise}-u{unit}.png')
+        # Plot the values
+        plt.plot(df['acc_x'], linestyle='solid', label='X')
+        plt.plot(df['acc_y'], linestyle='dotted', label='Y')
+        plt.plot(df['acc_z'], linestyle='dashed', label='Z')
+
+        plt.legend()
+        filename = f'plots/lineplot/lineplot-s{subject}-e{exercise}-u{unit}.png'
+        plt.savefig(filename)
 
 if __name__ == '__main__':
     main()

@@ -4,14 +4,23 @@ from sklearn.linear_model import LinearRegression
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_squared_error, r2_score
 
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.naive_bayes import GaussianNB
+from sklearn.metrics import classification_report
+
 import numpy as np
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 
+subject = 1
+exercise = 1
+unit = 2
+
 # Load dataset
-df = pd.read_csv('s1/e1/u2/test.txt', delimiter=';')
-unmodified_df = pd.read_csv('s1/e1/u2/test.txt', delimiter=';')
+infile = f's{subject}/e{exercise}/u{unit}/test-labeled.csv'
+df = pd.read_csv(infile, delimiter=';')
+unmodified_df = pd.read_csv(infile, delimiter=';')
 
 # Drop the time index as it's not a feature
 df = df.drop(columns=['time index'])
@@ -37,8 +46,10 @@ df = df.drop(columns=['time index'])
 # columns to predict the species
 
 # Variables (Dropping petal length to show we can predict it)
-X = df.drop(labels='acc_y', axis=1)
-y = df['acc_y']
+# X = df.drop(labels='acc_y', axis=1)
+# y = df['acc_y']
+X = df.drop(labels='label', axis=1)
+y = df['label']
 
 # Splitting the Dataset
 # In the real world, we test only a small sample
@@ -52,6 +63,8 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, train_size=0.3, random
 #X_train, X_test, y_train, y_test = train_test_split(X, y, train_size=0.8, random_state=111)
 
 lr = LinearRegression()
+knn_classifier = KNeighborsClassifier(n_neighbors=3)
+nb_classifier = GaussianNB()
 
 # Fit LR Model
 lr.fit(X_train, y_train)
@@ -73,6 +86,28 @@ print('Coefficient of determination: ', r2_score(y_test, y_pred))
 # Model performance - Error (Quantitative analysis)
 print('Root Mean Squared Error (RMSE): ', np.sqrt(mean_squared_error(y_test, y_pred)))
 print('Mean Squared Error (MSE): ', mean_squared_error(y_test, y_pred))
+
+# Train the classifier
+knn_classifier.fit(X_train, y_train)
+
+# Predict on the test data
+y_pred = knn_classifier.predict(X_test)
+
+# Evaluate the classifier
+print('\n')
+print('KNN')
+print(classification_report(y_test, y_pred))
+
+# Train the classifier
+nb_classifier.fit(X_train, y_train)
+
+# Predict on the test data
+y_pred = nb_classifier.predict(X_test)
+
+# Evaluate the classifier
+print('\n')
+print('Naive Bayes')
+print(classification_report(y_test, y_pred))
 
 # LR beta/slope coefficient:  [ 0.61207486  0.78013546 -0.35124986 -0.34942695]
 # The 4 values are because there are 4 different attributes
@@ -104,7 +139,7 @@ print('Mean Squared Error (MSE): ', mean_squared_error(y_test, y_pred))
 # MOVING ON TO PREDICTION
 
 # Predicting a new data point
-actual_df = unmodified_df.loc[5945]
+actual_df = unmodified_df.loc[5043]
 
 # Create a new dataframe
 d = {
@@ -116,18 +151,25 @@ d = {
     'gyr_z' : [actual_df['gyr_z']],
     'mag_x' : [actual_df['mag_x']],
     'mag_y' : [actual_df['mag_y']],
-    'mag_z' : [actual_df['mag_z']]
+    'mag_z' : [actual_df['mag_z']],
+    'label' : [actual_df['label']]
 }
 
 test_df = pd.DataFrame(data=d)
 
 print(test_df)
 
-X_test = test_df.drop('acc_y', axis=1)
-y_test = test_df['acc_y']
+# X_test = test_df.drop('acc_y', axis=1)
+# y_test = test_df['acc_y']
+
+X_test = test_df.drop('label', axis=1)
+y_test = test_df['label']
 
 # Predict the new data point using LR
 pred = lr.predict(X_test)
 
-print('Predicted acc_y: ', pred[0])
-print('Actual acc_y: ', actual_df['acc_y'])
+# print('Predicted acc_y: ', pred[0])
+# print('Actual acc_y: ', actual_df['acc_y'])
+
+print('Predicted label: ', pred[0])
+print('Actual label: ', actual_df['label'])
