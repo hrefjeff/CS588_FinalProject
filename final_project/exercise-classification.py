@@ -17,6 +17,9 @@ import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 
+import warnings
+warnings.simplefilter(action='ignore', category=FutureWarning)
+
 subject = 1
 exercise = 1
 unit = 2
@@ -80,11 +83,14 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, train_size=0.3, random
 
 # Instantiate all classifiers
 lr = LinearRegression()
-knn_classifier = KNeighborsClassifier(n_neighbors=3)
+rf_classifier = RandomForestClassifier()
+neighbors = 5
+knn_classifier = KNeighborsClassifier(n_neighbors=neighbors)
 nb_classifier = GaussianNB()
 
 # Fit Models
 lr.fit(X_train, y_train)
+rf_classifier.fit(X_train, y_train)
 knn_classifier.fit(X_train, y_train)
 nb_classifier.fit(X_train, y_train)
 
@@ -104,21 +110,28 @@ print('Coefficient of determination: ', r2_score(y_test, y_pred))
 print('Root Mean Squared Error (RMSE): ', np.sqrt(mean_squared_error(y_test, y_pred)))
 print('Mean Squared Error (MSE): ', mean_squared_error(y_test, y_pred))
 
+# Random Forest Prediction
+y_pred = rf_classifier.predict(X_test)
+
+# Evaluate the classifier
+print('\n')
+print('======Random Forest======')
+print(classification_report(y_test, y_pred))
+
 # KNN Prediction
 y_pred = knn_classifier.predict(X_test)
 
 # Evaluate the classifier
 print('\n')
-print('KNN')
+print(f'======KNN (n={neighbors})======')
 print(classification_report(y_test, y_pred))
-
 
 # Predict on the test data
 y_pred = nb_classifier.predict(X_test)
 
 # Evaluate the classifier
 print('\n')
-print('Naive Bayes')
+print('======Naive Bayes======')
 print(classification_report(y_test, y_pred))
 
 # LR beta/slope coefficient:  [ 0.61207486  0.78013546 -0.35124986 -0.34942695]

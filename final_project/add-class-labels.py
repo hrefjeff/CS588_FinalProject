@@ -28,7 +28,7 @@ def label_data(data, intervals, labels):
 # Main script to load data, define intervals, and apply labels
 if __name__ == "__main__":
 
-    subject = 1
+    subject = 5
     exercise = 1
     unit = 2
 
@@ -36,10 +36,14 @@ if __name__ == "__main__":
     outfile = f's{subject}/e{exercise}/u{unit}/test-labeled.csv'
     data = load_data(infile)
 
-    # Define your intervals and labels here
-    # For example, intervals as [(start_index1, end_index1), (start_index2, end_index2), ...]
+    # intervals - [(start_index1, end_index1), (start_index2, end_index2), ...]
+    #intervals = [(0, 2000), (2001, 2700), (2401, 3300), (3301, 4100), (4101, 5949)] # s1
+    #intervals = [(0, 1540), (1541, 2558), (2401, 3323), (3324, 4047), (4047, 5526)] # s2
+    #intervals = [(0, 1620), (1621, 2554), (2555, 3332), (3333, 4040), (4041, 5502)] # s3
+    #intervals = [(0, 1726), (1727, 2556), (2557, 3517), (3518, 4056), (4057, 5807)] # s4
+    intervals = [(0, 1170), (1171, 2560), (2561, 3225), (3226, 4090), (4091, 5139)] # s5
     # Labels corresponding to these intervals
-    intervals = [(0, 2000), (2001, 2700), (2401, 3300), (3301, 4100), (4101, 5949)]
+    # 0 = idle, 1 = correct, 2 = fast, 3 = low
     labels = [1, 0, 2, 0, 3]
 
     # Label the data
