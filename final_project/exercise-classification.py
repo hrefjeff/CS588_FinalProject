@@ -20,7 +20,7 @@ import matplotlib.pyplot as plt
 import warnings
 warnings.simplefilter(action='ignore', category=FutureWarning)
 
-subject = 1
+subject = 5
 exercise = 1
 unit = 2
 
@@ -30,7 +30,8 @@ def plot_per_class_accuracy(classifier, X, y, label, feature_selection = None):
     pipeline.fit(X_train, y_train)
     disp = plot_confusion_matrix(pipeline, X_test, y_test, cmap=plt.cm.Blues)
     plt.title(label)
-    plt.savefig(f'plots/confusionmatrix/cm-{label}.png')
+    fileout = f'plots/confusionmatrix/cm-{label.replace(" ", "").lower()}-s{subject}-e-{exercise}-u{unit}.png'
+    plt.savefig(fileout)
     true_positive = disp.confusion_matrix[1][1]
     false_negative = disp.confusion_matrix[1][0]
     print(label + " - Sensitivity: ", true_positive/(true_positive+false_negative))
