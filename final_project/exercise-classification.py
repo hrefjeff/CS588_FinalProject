@@ -6,10 +6,11 @@ from sklearn.metrics import mean_squared_error, r2_score
 
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.naive_bayes import GaussianNB
+from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import classification_report
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.pipeline import Pipeline
-#from sklearn.metrics import plot_confusion_matrix
+from sklearn.metrics import plot_confusion_matrix
 
 import numpy as np
 import pandas as pd
@@ -20,17 +21,17 @@ subject = 1
 exercise = 1
 unit = 2
 
-# def plot_per_class_accuracy(classifier, X, y, label, feature_selection = None):
-#     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.9, random_state=101)
-#     pipeline = Pipeline([("scalar", MinMaxScaler()), ("classifier", classifier)])
-#     pipeline.fit(X_train, y_train)
-#     disp = plot_confusion_matrix(pipeline, X_test, y_test, cmap=plt.cm.Blues)
-#     plt.title(label)
-#     plt.savefig(f'cm-{label}.png')
-#     true_positive = disp.confusion_matrix[1][1]
-#     false_negative = disp.confusion_matrix[1][0]
-#     print(label + " - Sensitivity: ", true_positive/(true_positive+false_negative))
-#     print()
+def plot_per_class_accuracy(classifier, X, y, label, feature_selection = None):
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.9, random_state=101)
+    pipeline = Pipeline([("scalar", MinMaxScaler()), ("classifier", classifier)])
+    pipeline.fit(X_train, y_train)
+    disp = plot_confusion_matrix(pipeline, X_test, y_test, cmap=plt.cm.Blues)
+    plt.title(label)
+    plt.savefig(f'plots/confusionmatrix/cm-{label}.png')
+    true_positive = disp.confusion_matrix[1][1]
+    false_negative = disp.confusion_matrix[1][0]
+    print(label + " - Sensitivity: ", true_positive/(true_positive+false_negative))
+    print()
 
 # Load dataset
 infile = f's{subject}/e{exercise}/u{unit}/test-labeled.csv'
@@ -148,10 +149,14 @@ print(classification_report(y_test, y_pred))
 # Lower samples used to train model, the faster it is to train
 
 classifier_labels = {
-    "Linear Regression": (lr, "red"),
+    "Random Forest": (RandomForestClassifier(random_state=1), "red"),
     "kNN": (knn_classifier, "blue"),
-    "Guassian Naive Bayes": (nb_classifier, "lime"),
+    "Guassian Naive Bayes": (nb_classifier, "lime")
 }
+
+for label in classifier_labels:
+    classifier = classifier_labels[label][0]
+    plot_per_class_accuracy(classifier, X, y, label)
 
 # MOVING ON TO PREDICTION
 
