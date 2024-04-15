@@ -29,7 +29,7 @@ def plot_per_class_accuracy(classifier, X, y, label, feature_selection = None):
     pipeline = Pipeline([("scalar", MinMaxScaler()), ("classifier", classifier)])
     pipeline.fit(X_train, y_train)
     disp = plot_confusion_matrix(pipeline, X_test, y_test, cmap=plt.cm.Blues)
-    plt.title(label)
+    plt.title(f'{label.replace(" ", "").lower()}-s{subject}-e-{exercise}-u{unit}')
     fileout = f'plots/confusionmatrix/cm-{label.replace(" ", "").lower()}-s{subject}-e-{exercise}-u{unit}.png'
     plt.savefig(fileout)
     true_positive = disp.confusion_matrix[1][1]
