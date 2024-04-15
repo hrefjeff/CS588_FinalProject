@@ -32,6 +32,7 @@ def main():
 
         # Display contribution of each pc's
         ev = pca.explained_variance_ratio_
+        # components = pca.components_
         # print(f'{subject} : {ev}')
 
         # These values are normalized to a scale of 1.

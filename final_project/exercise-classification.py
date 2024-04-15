@@ -7,6 +7,9 @@ from sklearn.metrics import mean_squared_error, r2_score
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.naive_bayes import GaussianNB
 from sklearn.metrics import classification_report
+from sklearn.preprocessing import MinMaxScaler
+from sklearn.pipeline import Pipeline
+#from sklearn.metrics import plot_confusion_matrix
 
 import numpy as np
 import pandas as pd
@@ -16,6 +19,18 @@ import matplotlib.pyplot as plt
 subject = 1
 exercise = 1
 unit = 2
+
+# def plot_per_class_accuracy(classifier, X, y, label, feature_selection = None):
+#     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.9, random_state=101)
+#     pipeline = Pipeline([("scalar", MinMaxScaler()), ("classifier", classifier)])
+#     pipeline.fit(X_train, y_train)
+#     disp = plot_confusion_matrix(pipeline, X_test, y_test, cmap=plt.cm.Blues)
+#     plt.title(label)
+#     plt.savefig(f'cm-{label}.png')
+#     true_positive = disp.confusion_matrix[1][1]
+#     false_negative = disp.confusion_matrix[1][0]
+#     print(label + " - Sensitivity: ", true_positive/(true_positive+false_negative))
+#     print()
 
 # Load dataset
 infile = f's{subject}/e{exercise}/u{unit}/test-labeled.csv'
@@ -62,17 +77,18 @@ y = df['label']
 X_train, X_test, y_train, y_test = train_test_split(X, y, train_size=0.3, random_state=111)
 #X_train, X_test, y_train, y_test = train_test_split(X, y, train_size=0.8, random_state=111)
 
+# Instantiate all classifiers
 lr = LinearRegression()
 knn_classifier = KNeighborsClassifier(n_neighbors=3)
 nb_classifier = GaussianNB()
 
-# Fit LR Model
+# Fit Models
 lr.fit(X_train, y_train)
+knn_classifier.fit(X_train, y_train)
+nb_classifier.fit(X_train, y_train)
 
 # LR Prediction
 y_pred = lr.predict(X_test)
-
-# Quantitative Analysis - evaluate LR performance
 
 # LR coefficients - beta/slope
 print('LR beta/slope coefficient: ', lr.coef_)
@@ -87,10 +103,7 @@ print('Coefficient of determination: ', r2_score(y_test, y_pred))
 print('Root Mean Squared Error (RMSE): ', np.sqrt(mean_squared_error(y_test, y_pred)))
 print('Mean Squared Error (MSE): ', mean_squared_error(y_test, y_pred))
 
-# Train the classifier
-knn_classifier.fit(X_train, y_train)
-
-# Predict on the test data
+# KNN Prediction
 y_pred = knn_classifier.predict(X_test)
 
 # Evaluate the classifier
@@ -98,8 +111,6 @@ print('\n')
 print('KNN')
 print(classification_report(y_test, y_pred))
 
-# Train the classifier
-nb_classifier.fit(X_train, y_train)
 
 # Predict on the test data
 y_pred = nb_classifier.predict(X_test)
@@ -136,40 +147,40 @@ print(classification_report(y_test, y_pred))
 # Just trained the model on 10% of the data, so it's not very accurate
 # Lower samples used to train model, the faster it is to train
 
-# MOVING ON TO PREDICTION
-
-# Predicting a new data point
-actual_df = unmodified_df.loc[5043]
-
-# Create a new dataframe
-d = {
-    'acc_x' : [actual_df['acc_x']],
-    'acc_y' : [actual_df['acc_y']],
-    'acc_z' : [actual_df['acc_z']],
-    'gyr_x' : [actual_df['gyr_x']],
-    'gyr_y' : [actual_df['gyr_y']],
-    'gyr_z' : [actual_df['gyr_z']],
-    'mag_x' : [actual_df['mag_x']],
-    'mag_y' : [actual_df['mag_y']],
-    'mag_z' : [actual_df['mag_z']],
-    'label' : [actual_df['label']]
+classifier_labels = {
+    "Linear Regression": (lr, "red"),
+    "kNN": (knn_classifier, "blue"),
+    "Guassian Naive Bayes": (nb_classifier, "lime"),
 }
 
-test_df = pd.DataFrame(data=d)
+# MOVING ON TO PREDICTION
 
-print(test_df)
+# # Predicting a new data point
+# actual_df = unmodified_df.loc[5043]
 
-# X_test = test_df.drop('acc_y', axis=1)
-# y_test = test_df['acc_y']
+# # Create a new dataframe
+# d = {
+#     'acc_x' : [actual_df['acc_x']],
+#     'acc_y' : [actual_df['acc_y']],
+#     'acc_z' : [actual_df['acc_z']],
+#     'gyr_x' : [actual_df['gyr_x']],
+#     'gyr_y' : [actual_df['gyr_y']],
+#     'gyr_z' : [actual_df['gyr_z']],
+#     'mag_x' : [actual_df['mag_x']],
+#     'mag_y' : [actual_df['mag_y']],
+#     'mag_z' : [actual_df['mag_z']],
+#     'label' : [actual_df['label']]
+# }
 
-X_test = test_df.drop('label', axis=1)
-y_test = test_df['label']
+# test_df = pd.DataFrame(data=d)
 
-# Predict the new data point using LR
-pred = lr.predict(X_test)
+# # print(test_df)
 
-# print('Predicted acc_y: ', pred[0])
-# print('Actual acc_y: ', actual_df['acc_y'])
+# X_test = test_df.drop('label', axis=1)
+# y_test = test_df['label']
 
-print('Predicted label: ', pred[0])
-print('Actual label: ', actual_df['label'])
+# # Predict the new data point using LR
+# pred = lr.predict(X_test)
+
+# print('Predicted label: ', pred[0])
+# print('Actual label: ', actual_df['label'])
