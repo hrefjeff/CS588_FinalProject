@@ -18,6 +18,7 @@ def main():
     # Load dataset for each subject
     for subject in range(1, constants.SUBJECTS + 1):
         df = pd.read_csv(f's{subject}/e{exercise}/u{unit}/test.txt', delimiter=';')
+        outfile = f's{subject}/e{exercise}/u{unit}/test-pca-reduced.csv'
 
         # Drop the time index as it's not a feature
         df = df.drop(columns=['time index'])
@@ -33,7 +34,7 @@ def main():
         # Display contribution of each pc's
         ev = pca.explained_variance_ratio_
         # components = pca.components_
-        # print(f'{subject} : {ev}')
+        print(f'{subject} : {ev}')
 
         # These values are normalized to a scale of 1.
         # The first principal component retains .61 (61%) of information
@@ -47,6 +48,9 @@ def main():
         # -----------------------------------------
         df_pca_reduced = pd.DataFrame(data = principalComponents,
                                 columns = ['PC-1', 'PC-2', 'PC-3', 'PC-4', 'PC-5'])
+
+        # Optionally, save the labeled data to a new CSV file
+        df_pca_reduced.to_csv(outfile, sep=';', index=False)
 
         # ADDING SOME VISUALIZATION
         # Bar graph for explained variance ratio

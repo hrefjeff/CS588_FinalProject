@@ -17,25 +17,6 @@ subject = 1
 exercise = 1
 unit = 2
 
-# # Load dataset for each subject
-# for subject in range(1, constants.SUBJECTS + 1):
-#     x = pd.read_csv(f's{subject}/e{exercise}/u{unit}/test.txt', delimiter'=';')',
-#     # Drop the time index as it's not a feature
-#     x = x.drop(columns=['time index'])
-
-#     # Data visualization
-#     plt.scatter(x['acc_x'], x['acc_y'], s=50)
-#     plt.xlabel('Accelerometer X', fontsize=14)
-#     plt.ylabel('Accelerometer Y', fontsize=14)
-#     plt.savefig(f'plots/scatterplot-s{subject}-e{exercise}-u{unit}.png')
-#     plt.figure()
-
-# # TODO: Run PCA to reduce dimensions down to 2 and justify it
-# # TODO: Run clustering algorithm k means on each subject's e1-u2
-
-# exit()
-
-
 x = pd.read_csv(f's{subject}/e{exercise}/u{unit}/test-labeled.csv', delimiter=';') # Drop the time index as it's not a feature
 x = x.drop(columns=['time index'])
 

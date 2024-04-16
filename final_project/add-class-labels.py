@@ -49,7 +49,7 @@ if __name__ == "__main__":
     # Label the data
     labeled_data = label_data(data, intervals, labels)
 
-    # Optionally, save the labeled data to a new CSV file
+    # save the labeled data to a new CSV file
     labeled_data.to_csv(outfile, sep=';', index=False)
 
     # Show the labeled part of the data
