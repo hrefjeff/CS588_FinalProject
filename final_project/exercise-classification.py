@@ -20,7 +20,7 @@ import matplotlib.pyplot as plt
 import warnings
 warnings.simplefilter(action='ignore', category=FutureWarning)
 
-subject = 5
+subject = 1
 exercise = 1
 unit = 2
 
